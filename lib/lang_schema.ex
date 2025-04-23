@@ -1,0 +1,2 @@
+defmodule LangSchema do
+end
