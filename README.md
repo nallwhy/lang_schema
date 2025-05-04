@@ -1,3 +1,6 @@
+[![Module Version](https://img.shields.io/hexpm/v/lang_schema.svg)](https://hex.pm/packages/lang_schema)
+[![Hex Docs](https://img.shields.io/badge/hex-docs-lightgreen.svg)](https://hexdocs.pm/lang_schema)
+
 # LangSchema
 
 Converts an abstract schema into JSON schemas required by various AI providers, minimizing code changes when switching providers.
