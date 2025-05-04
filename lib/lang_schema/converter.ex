@@ -36,6 +36,12 @@ defmodule LangSchema.Converter do
 
     Ordered properties may be serialized using `Jason.OrderedObject` to retain order in the
     resulting JSON string. This assumes that `Jason` is used for final serialization; other encoders are not currently supported for ordered output.
+
+  * `:wrap?` – If set to `false`, the resulting JSON schema will be returned as-is, without being passed through the `wrap/2` function.
+    By default, `wrap/2` may add an outer structure around the schema (e.g., placing it under a "schema" field) depending on the needs of the target AI provider.
+
+    Disabling wrapping can be useful when the final schema needs to be embedded manually or used in a context that does not require such additional structure.
+    Default is `true`.
   """
   @callback convert(schema :: map(), opts :: keyword()) :: json_schema :: map()
 
@@ -97,9 +103,14 @@ defmodule LangSchema.Converter do
 
       @impl LangSchema.Converter
       def convert(schema, opts \\ []) do
+        wrap? = opts |> Keyword.get(:wrap?, true)
+
         json_schema = unquote(__MODULE__).convert(schema, __MODULE__, opts)
 
-        json_schema |> wrap(opts)
+        case wrap? do
+          true -> json_schema |> wrap(opts)
+          false -> json_schema
+        end
       end
 
       @impl LangSchema.Converter
