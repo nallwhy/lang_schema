@@ -1,6 +1,7 @@
 defmodule LangSchema.Type.Gemini.Object do
   use LangSchema.Type
   alias LangSchema.Util.Nillable
+  alias LangSchema.Util.KeywordStyle
 
   @impl LangSchema.Type
   def convert(%{properties: properties} = schema, converter_mod, opts) do
@@ -14,12 +15,12 @@ defmodule LangSchema.Type.Gemini.Object do
               property_ordering
 
             nil ->
-              if not Keyword.keyword?(properties) do
+              if not KeywordStyle.keyword_style?(properties) do
                 raise ArgumentError,
-                      "Properties must be a keyword list when ordered_properties is true and property_ordering is not set"
+                      "Properties must be a keyword style(tuple with atom or string keys) when ordered_properties is true and property_ordering is not set"
               end
 
-              properties |> Keyword.keys()
+              properties |> KeywordStyle.keys()
           end
 
         false ->

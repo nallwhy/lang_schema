@@ -51,10 +51,10 @@ defmodule LangSchema.Test.Schema do
         metadata: %{
           type: :object,
           description: "Metadata",
-          properties: %{
-            id: %{type: :string},
-            extra: %{type: :string}
-          },
+          properties: [
+            {"id", %{type: :string}},
+            {"extra", %{type: :string}}
+          ],
           required: [:id]
         }
       ]

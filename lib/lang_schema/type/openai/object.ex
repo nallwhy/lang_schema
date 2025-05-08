@@ -1,5 +1,6 @@
 defmodule LangSchema.Type.OpenAI.Object do
   use LangSchema.Type
+  alias LangSchema.Util.KeywordStyle
 
   @impl LangSchema.Type
   def convert(%{properties: properties}, converter_mod, opts) do
@@ -12,9 +13,9 @@ defmodule LangSchema.Type.OpenAI.Object do
           end)
 
         true ->
-          if not Keyword.keyword?(properties) do
+          if not KeywordStyle.keyword_style?(properties) do
             raise ArgumentError,
-                  "Properties must be a keyword list when ordered_properties is true"
+                  "Properties must be a keyword style(tuple with atom or string keys) when ordered_properties is true"
           end
 
           properties

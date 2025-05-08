@@ -53,7 +53,7 @@ defmodule LangSchema.Converter.OpenAITest do
                        "extra" => %{"type" => "string"}
                      },
                      "additionalProperties" => false,
-                     "required" => ["extra", "id"]
+                     "required" => ["id", "extra"]
                    }
                  },
                  "additionalProperties" => false,
@@ -106,7 +106,7 @@ defmodule LangSchema.Converter.OpenAITest do
       }
 
       assert_raise ArgumentError,
-                   ~r/Properties must be a keyword list when ordered_properties is true/,
+                   "Properties must be a keyword style(tuple with atom or string keys) when ordered_properties is true",
                    fn ->
                      schema |> OpenAI.convert(ordered_properties: true)
                    end
