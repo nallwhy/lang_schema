@@ -16,4 +16,15 @@ defmodule LangSchema.Adapter do
   Converts a given input into a schema using the specified converter module.
   """
   @callback to_schema(any()) :: schema :: map()
+
+  defmacro __using__(_opts) do
+    quote do
+      @behaviour LangSchema.Adapter
+
+      @impl LangSchema.Adapter
+      def convert(input, converter, opts \\ []) when is_list(input) do
+        to_schema(input) |> converter.convert(opts)
+      end
+    end
+  end
 end

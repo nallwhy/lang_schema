@@ -1,13 +1,7 @@
 if Code.ensure_loaded?(LangChain.FunctionParam) do
   defmodule LangSchema.Adapter.LangChainFunctionParam do
-    @behaviour LangSchema.Adapter
-
+    use LangSchema.Adapter
     alias LangSchema.Util.Nillable
-
-    @impl LangSchema.Adapter
-    def convert(function_params, converter, opts \\ []) when is_list(function_params) do
-      to_schema(function_params) |> converter.convert(opts)
-    end
 
     @impl LangSchema.Adapter
     def to_schema(function_params) when is_list(function_params) do
