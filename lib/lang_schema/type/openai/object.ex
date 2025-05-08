@@ -24,7 +24,7 @@ defmodule LangSchema.Type.OpenAI.Object do
           |> Jason.OrderedObject.new()
       end
 
-    required = converted_properties |> Enum.map(fn {key, _} -> key end)
+    required = properties |> Enum.map(fn {key, _} -> to_string(key) end)
 
     %{
       "properties" => converted_properties,

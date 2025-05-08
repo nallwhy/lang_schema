@@ -58,13 +58,13 @@ defmodule LangSchema.Converter.OpenAITest do
                  },
                  "additionalProperties" => false,
                  "required" => [
-                   "email",
                    "flag",
-                   "metadata",
-                   "price",
                    "rating",
+                   "price",
+                   "email",
                    "role",
-                   "tags"
+                   "tags",
+                   "metadata"
                  ]
                },
                "strict" => true
