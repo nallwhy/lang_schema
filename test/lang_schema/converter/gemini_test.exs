@@ -48,6 +48,10 @@ defmodule LangSchema.Converter.GeminiTest do
                      "extra" => %{"type" => "string"}
                    },
                    "required" => ["id"]
+                 },
+                 "null" => %{
+                   "type" => "null",
+                   "description" => "Null value"
                  }
                }
              }

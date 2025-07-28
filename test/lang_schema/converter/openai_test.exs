@@ -54,6 +54,10 @@ defmodule LangSchema.Converter.OpenAITest do
                      },
                      "additionalProperties" => false,
                      "required" => ["id", "extra"]
+                   },
+                   "null" => %{
+                     "type" => "null",
+                     "description" => "Null value"
                    }
                  },
                  "additionalProperties" => false,
@@ -64,7 +68,8 @@ defmodule LangSchema.Converter.OpenAITest do
                    "email",
                    "role",
                    "tags",
-                   "metadata"
+                   "metadata",
+                   "null"
                  ]
                },
                "strict" => true
