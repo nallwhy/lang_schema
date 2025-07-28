@@ -34,7 +34,8 @@ defmodule LangSchema.Converter.OpenAI do
       number: LangSchema.Type.OpenAI.Number,
       string: LangSchema.Type.OpenAI.String,
       array: LangSchema.Type.OpenAI.Array,
-      object: LangSchema.Type.OpenAI.Object
+      object: LangSchema.Type.OpenAI.Object,
+      null: LangSchema.Type.Null
     }
   end
 

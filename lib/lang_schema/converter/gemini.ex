@@ -8,7 +8,8 @@ defmodule LangSchema.Converter.Gemini do
       number: LangSchema.Type.Gemini.Number,
       string: LangSchema.Type.Gemini.String,
       array: LangSchema.Type.Gemini.Array,
-      object: LangSchema.Type.Gemini.Object
+      object: LangSchema.Type.Gemini.Object,
+      null: LangSchema.Type.Null
     }
   end
 
