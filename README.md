@@ -98,7 +98,7 @@ in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:lang_schema, "~> 0.3.0"}
+    {:lang_schema, "~> 0.4.0"}
   ]
 end
 ```
