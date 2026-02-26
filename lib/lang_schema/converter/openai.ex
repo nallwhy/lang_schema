@@ -1,4 +1,52 @@
 defmodule LangSchema.Converter.OpenAI do
+  @moduledoc """
+  Converts a LangSchema into a JSON schema compatible with OpenAI's Structured Outputs.
+
+  ## Supported JSON Schema spec
+
+  Reference: https://platform.openai.com/docs/guides/structured-outputs/supported-schemas
+
+  ### Supported types
+
+  `string`, `number`, `integer`, `boolean`, `object`, `array`, `enum`, `anyOf`
+
+  > Root objects cannot be `anyOf` type.
+
+  ### Supported keywords
+
+  - `type`, `description`, `enum`, `const`
+  - `properties`, `required`, `additionalProperties` (must be `false`)
+  - `items`, `anyOf`
+  - `$ref`, `$defs` (recursive schemas supported)
+
+  ### Unsupported keywords
+
+  | Type | Unsupported keywords |
+  |---|---|
+  | String | `minLength`, `maxLength`, `pattern`, `format` |
+  | Number | `minimum`, `maximum`, `multipleOf` |
+  | Object | `patternProperties`, `unevaluatedProperties`, `propertyNames`, `minProperties`, `maxProperties` |
+  | Array | `unevaluatedItems`, `contains`, `minContains`, `maxContains`, `minItems`, `maxItems`, `uniqueItems` |
+
+  ### Constraints
+
+  - All fields must be `required`.
+  - `additionalProperties` must be `false` on every object.
+  - Max 100 object properties total, up to 5 levels of nesting.
+
+  ## LangSchema implementation status
+
+  | Keyword | Status |
+  |---|---|
+  | `type`, `description`, `enum` | Supported |
+  | `properties`, `required`, `additionalProperties` | Supported (auto-enforced) |
+  | `items` | Supported |
+  | `anyOf` | Supported |
+  | `nullable` | Supported (via `["type", "null"]`) |
+  | `const` | Not yet implemented |
+  | `$ref`, `$defs` | Not yet implemented |
+  """
+
   use LangSchema.Converter
   alias LangSchema.Util.Nillable
 

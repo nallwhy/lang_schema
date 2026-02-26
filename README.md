@@ -5,6 +5,57 @@
 
 Converts an abstract schema into JSON schemas required by various AI providers, minimizing code changes when switching providers.
 
+## Example
+
+Define one schema, convert to any provider:
+
+```elixir
+schema = %{
+  type: :object,
+  description: "User",
+  properties: [
+    name: %{type: :string, description: "Name"},
+    age: %{type: :integer, description: "Age"},
+    role: %{type: :string, enum: ["admin", "user"], nullable: true}
+  ]
+}
+```
+
+**OpenAI**
+
+```elixir
+schema |> LangSchema.Converter.OpenAI.to_schema()
+# => %{
+#   "type" => "object",
+#   "description" => "User",
+#   "properties" => %{
+#     "name" => %{"type" => "string", "description" => "Name"},
+#     "age" => %{"type" => "integer", "description" => "Age"},
+#     "role" => %{"type" => ["string", "null"], "enum" => ["admin", "user"]}
+#   },
+#   "required" => ["name", "age", "role"],
+#   "additionalProperties" => false
+# }
+```
+
+**Gemini**
+
+```elixir
+schema |> LangSchema.Converter.Gemini.to_schema()
+# => %{
+#   "type" => "object",
+#   "description" => "User",
+#   "properties" => %{
+#     "name" => %{"type" => "string", "description" => "Name"},
+#     "age" => %{"type" => "integer", "description" => "Age"},
+#     "role" => %{"type" => "string", "enum" => ["admin", "user"], "nullable" => true}
+#   }
+# }
+```
+
+Same schema, different output — `nullable` becomes `["string", "null"]` for OpenAI and `"nullable": true` for Gemini.
+OpenAI auto-enforces `required` and `additionalProperties: false`.
+
 ## Design Goals
 
 LangSchema aims to define an abstract schema that can be commonly applied across different AI providers, allowing you to switch providers without modifying your original schema. While provider-specific features are not entirely excluded, supporting every custom feature is not the primary goal. Instead, LangSchema prioritizes raising errors when a schema might implicitly behave incorrectly due to differences between providers, making such issues explicit and easier to fix.
