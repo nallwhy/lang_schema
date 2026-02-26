@@ -2,11 +2,11 @@ defmodule LangSchema.Converter.OpenAITest do
   use ExUnit.Case, async: true
   alias LangSchema.Converter.OpenAI
 
-  describe "convert" do
-    test "returns wraped json_schema with valid schema" do
+  describe "to_json_schema" do
+    test "returns wrapped json_schema with valid schema" do
       result =
         LangSchema.Test.Schema.schema()
-        |> OpenAI.convert(
+        |> OpenAI.to_json_schema(
           ordered_properties: false,
           name: "test",
           description: "Test"
@@ -76,12 +76,6 @@ defmodule LangSchema.Converter.OpenAITest do
              }
     end
 
-    test "returns not wraped json_schema with wrap?: false opt" do
-      result = LangSchema.Test.Schema.schema() |> OpenAI.convert(wrap?: false)
-
-      assert %{"type" => "object", "description" => "All Types"} = result
-    end
-
     test "returns json_schema with keyword object schema with ordered_properties: true opt" do
       result =
         %{
@@ -91,7 +85,7 @@ defmodule LangSchema.Converter.OpenAITest do
             test2: %{type: :string}
           ]
         }
-        |> OpenAI.convert(ordered_properties: true)
+        |> OpenAI.to_json_schema(ordered_properties: true)
 
       assert result["schema"]["properties"] == %Jason.OrderedObject{
                values: [
@@ -113,7 +107,7 @@ defmodule LangSchema.Converter.OpenAITest do
       assert_raise ArgumentError,
                    "Properties must be a keyword style(tuple with atom or string keys) when ordered_properties is true",
                    fn ->
-                     schema |> OpenAI.convert(ordered_properties: true)
+                     schema |> OpenAI.to_json_schema(ordered_properties: true)
                    end
     end
 
@@ -130,7 +124,7 @@ defmodule LangSchema.Converter.OpenAITest do
             }
           }
         }
-        |> OpenAI.convert()
+        |> OpenAI.to_json_schema()
 
       assert result["schema"]["properties"] == %{
                "test" => %{
@@ -153,7 +147,7 @@ defmodule LangSchema.Converter.OpenAITest do
       }
 
       assert_raise ArgumentError, ~r/Invalid combination :one_of/, fn ->
-        schema |> OpenAI.convert()
+        schema |> OpenAI.to_json_schema()
       end
     end
 
@@ -168,8 +162,18 @@ defmodule LangSchema.Converter.OpenAITest do
       }
 
       assert_raise ArgumentError, ~r/Invalid combination :all_of/, fn ->
-        schema |> OpenAI.convert()
+        schema |> OpenAI.to_json_schema()
       end
+    end
+  end
+
+  describe "to_schema" do
+    test "returns raw json schema without wrapping" do
+      result = LangSchema.Test.Schema.schema() |> OpenAI.to_schema()
+
+      assert %{"type" => "object", "description" => "All Types"} = result
+      refute Map.has_key?(result, "name")
+      refute Map.has_key?(result, "strict")
     end
   end
 end

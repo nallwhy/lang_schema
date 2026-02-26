@@ -47,9 +47,7 @@ defmodule LangSchema.Adapter.LangChainFunctionParamTest do
   end
 
   test "convert", %{function_params: function_params} do
-    assert LangChainFunctionParam.convert(function_params, LangSchema.Converter.OpenAI,
-             wrap?: false
-           ) == %{
+    assert LangChainFunctionParam.convert(function_params, LangSchema.Converter.OpenAI) == %{
              "type" => "object",
              "properties" => %{
                "person" => %{

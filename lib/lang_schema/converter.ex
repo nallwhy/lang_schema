@@ -5,9 +5,9 @@ defmodule LangSchema.Converter do
   This module serves as a foundation for transforming an abstract schema definition
   into a JSON schema compatible with a specific AI provider (like OpenAI, Gemini, etc.).
 
-  It defines the `convert/2` callback that all specific converter modules must implement
-  and provides a `__using__` macro to inject basic conversion logic and allow for
-  customization.
+  It defines the `to_schema/2` and `to_json_schema/2` callbacks that all specific converter
+  modules must implement and provides a `__using__` macro to inject basic conversion logic
+  and allow for customization.
 
   ## Usage
 
@@ -20,7 +20,7 @@ defmodule LangSchema.Converter do
   @type combination() :: :any_of | :one_of | :all_of
 
   @doc """
-  Converts a schema into a JSON schema.
+  Converts a schema into a raw JSON schema.
 
   ## Options
 
@@ -36,14 +36,18 @@ defmodule LangSchema.Converter do
 
     Ordered properties may be serialized using `Jason.OrderedObject` to retain order in the
     resulting JSON string. This assumes that `Jason` is used for final serialization; other encoders are not currently supported for ordered output.
-
-  * `:wrap?` – If set to `false`, the resulting JSON schema will be returned as-is, without being passed through the `wrap/2` function.
-    By default, `wrap/2` may add an outer structure around the schema (e.g., placing it under a "schema" field) depending on the needs of the target AI provider.
-
-    Disabling wrapping can be useful when the final schema needs to be embedded manually or used in a context that does not require such additional structure.
-    Default is `true`.
   """
-  @callback convert(schema :: map(), opts :: keyword()) :: json_schema :: map()
+  @callback to_schema(schema :: map(), opts :: keyword()) :: json_schema :: map()
+
+  @doc """
+  Converts a schema into a JSON schema wrapped in the provider-specific envelope.
+
+  This calls `to_schema/2` internally and then passes the result through `wrap/2`.
+
+  Accepts the same options as `to_schema/2`, plus any provider-specific options
+  used by `wrap/2` (e.g., `:name` and `:description` for OpenAI).
+  """
+  @callback to_json_schema(schema :: map(), opts :: keyword()) :: json_schema :: map()
 
   @doc """
   Wraps the resulting JSON schema into a final structure required by the target provider.
@@ -102,15 +106,13 @@ defmodule LangSchema.Converter do
       @behaviour LangSchema.Converter
 
       @impl LangSchema.Converter
-      def convert(schema, opts \\ []) do
-        wrap? = opts |> Keyword.get(:wrap?, true)
+      def to_schema(schema, opts \\ []) do
+        unquote(__MODULE__).convert(schema, __MODULE__, opts)
+      end
 
-        json_schema = unquote(__MODULE__).convert(schema, __MODULE__, opts)
-
-        case wrap? do
-          true -> json_schema |> wrap(opts)
-          false -> json_schema
-        end
+      @impl LangSchema.Converter
+      def to_json_schema(schema, opts \\ []) do
+        to_schema(schema, opts) |> wrap(opts)
       end
 
       @impl LangSchema.Converter

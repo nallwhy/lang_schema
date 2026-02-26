@@ -18,9 +18,12 @@ LangSchema aims to define an abstract schema that can be commonly applied across
 
 Converters are the core components that transform abstract schemas into provider-specific JSON schemas. Each converter implements the `LangSchema.Converter` behaviour and handles the specific requirements and limitations of different AI providers.
 
+Each converter provides two main functions:
+- **`to_schema/2`**: Converts an abstract schema into a raw JSON schema
+- **`to_json_schema/2`**: Converts an abstract schema into a JSON schema wrapped in the provider-specific envelope (e.g., OpenAI's `name` + `schema` + `strict` structure)
+
 Key features of converters:
 - **Type Mapping**: Define how abstract types (`:string`, `:integer`, etc.) map to provider-specific implementations
-- **Schema Wrapping**: Format the final JSON schema according to provider requirements (e.g., OpenAI's `name` + `schema` structure)
 - **Combination Support**: Specify which JSON Schema combinations (`:any_of`, `:one_of`, `:all_of`) the provider supports
 - **Custom Keywords**: Handle provider-specific schema keywords and extensions
 
@@ -106,3 +109,6 @@ end
 ## Relationship with Elixir LangChain
 
 Elixir [LangChain](https://hex.pm/packages/langchain) provides support for structured output using `json_schema` for chat and `parameters_schema` for functions. By leveraging LangSchema with LangChain, you can seamlessly switch between AI providers without changing your code, maintaining a unified schema approach across different integrations.
+
+- For `json_schema` (structured output): use `to_json_schema/2`
+- For `parameters_schema` (function parameters): use `to_schema/2`
