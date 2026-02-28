@@ -24,7 +24,7 @@ schema = %{
 **OpenAI**
 
 ```elixir
-schema |> LangSchema.Converter.OpenAI.to_schema()
+schema |> LangSchema.to_schema(:openai)
 # => %{
 #   "type" => "object",
 #   "description" => "User",
@@ -41,7 +41,7 @@ schema |> LangSchema.Converter.OpenAI.to_schema()
 **Gemini**
 
 ```elixir
-schema |> LangSchema.Converter.Gemini.to_schema()
+schema |> LangSchema.to_schema(:gemini)
 # => %{
 #   "type" => "object",
 #   "description" => "User",
@@ -161,5 +161,5 @@ end
 
 Elixir [LangChain](https://hex.pm/packages/langchain) provides support for structured output using `json_schema` for chat and `parameters_schema` for functions. By leveraging LangSchema with LangChain, you can seamlessly switch between AI providers without changing your code, maintaining a unified schema approach across different integrations.
 
-- For `json_schema` (structured output): use `to_json_schema/2`
-- For `parameters_schema` (function parameters): use `to_schema/2`
+- For `json_schema` (structured output): use `LangSchema.to_json_schema/3`
+- For `parameters_schema` (function parameters): use `LangSchema.to_schema/3`
