@@ -7,19 +7,19 @@ defmodule LangSchema do
   @type provider :: :openai | :gemini
 
   @doc """
-  Converts a schema into a raw JSON schema using the given provider.
+  Converts a schema into a provider-specific JSON schema for function calling (tool use).
   """
-  @spec to_schema(map(), provider(), keyword()) :: map()
-  def to_schema(schema, provider, opts \\ []) do
-    converter(provider).to_schema(schema, opts)
+  @spec function_calling(map(), provider(), keyword()) :: map()
+  def function_calling(schema, provider, opts \\ []) do
+    converter(provider).function_calling(schema, opts)
   end
 
   @doc """
-  Converts a schema into a JSON schema wrapped in the provider-specific envelope.
+  Converts a schema into a JSON schema wrapped in the provider-specific envelope for structured output.
   """
-  @spec to_json_schema(map(), provider(), keyword()) :: map()
-  def to_json_schema(schema, provider, opts \\ []) do
-    converter(provider).to_json_schema(schema, opts)
+  @spec structured_output(map(), provider(), keyword()) :: map()
+  def structured_output(schema, provider, opts \\ []) do
+    converter(provider).structured_output(schema, opts)
   end
 
   defp converter(provider) do

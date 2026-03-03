@@ -21,3 +21,5 @@ lang_schema-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
+
+.envrc.private

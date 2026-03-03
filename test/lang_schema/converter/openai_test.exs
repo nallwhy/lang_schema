@@ -2,11 +2,11 @@ defmodule LangSchema.Converter.OpenAITest do
   use ExUnit.Case, async: true
   alias LangSchema.Converter.OpenAI
 
-  describe "to_json_schema" do
+  describe "structured_output" do
     test "returns wrapped json_schema with valid schema" do
       result =
         LangSchema.Test.Schema.schema()
-        |> OpenAI.to_json_schema(
+        |> OpenAI.structured_output(
           ordered_properties: false,
           name: "test",
           description: "Test"
@@ -85,7 +85,7 @@ defmodule LangSchema.Converter.OpenAITest do
             test2: %{type: :string}
           ]
         }
-        |> OpenAI.to_json_schema(ordered_properties: true)
+        |> OpenAI.structured_output(ordered_properties: true)
 
       assert result["schema"]["properties"] == %Jason.OrderedObject{
                values: [
@@ -107,7 +107,7 @@ defmodule LangSchema.Converter.OpenAITest do
       assert_raise ArgumentError,
                    "Properties must be a keyword style(tuple with atom or string keys) when ordered_properties is true",
                    fn ->
-                     schema |> OpenAI.to_json_schema(ordered_properties: true)
+                     schema |> OpenAI.structured_output(ordered_properties: true)
                    end
     end
 
@@ -124,7 +124,7 @@ defmodule LangSchema.Converter.OpenAITest do
             }
           }
         }
-        |> OpenAI.to_json_schema()
+        |> OpenAI.structured_output()
 
       assert result["schema"]["properties"] == %{
                "test" => %{
@@ -147,7 +147,7 @@ defmodule LangSchema.Converter.OpenAITest do
       }
 
       assert_raise ArgumentError, ~r/Invalid combination :one_of/, fn ->
-        schema |> OpenAI.to_json_schema()
+        schema |> OpenAI.structured_output()
       end
     end
 
@@ -162,14 +162,14 @@ defmodule LangSchema.Converter.OpenAITest do
       }
 
       assert_raise ArgumentError, ~r/Invalid combination :all_of/, fn ->
-        schema |> OpenAI.to_json_schema()
+        schema |> OpenAI.structured_output()
       end
     end
   end
 
-  describe "to_schema" do
+  describe "function_calling" do
     test "returns raw json schema without wrapping" do
-      result = LangSchema.Test.Schema.schema() |> OpenAI.to_schema()
+      result = LangSchema.Test.Schema.schema() |> OpenAI.function_calling()
 
       assert %{"type" => "object", "description" => "All Types"} = result
       refute Map.has_key?(result, "name")

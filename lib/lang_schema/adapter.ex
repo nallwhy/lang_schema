@@ -23,7 +23,7 @@ defmodule LangSchema.Adapter do
 
       @impl LangSchema.Adapter
       def convert(input, converter, opts \\ []) when is_list(input) do
-        to_schema(input) |> converter.to_schema(opts)
+        to_schema(input) |> converter.function_calling(opts)
       end
     end
   end

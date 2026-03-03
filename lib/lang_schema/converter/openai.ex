@@ -51,7 +51,7 @@ defmodule LangSchema.Converter.OpenAI do
   alias LangSchema.Util.Nillable
 
   @doc """
-  Wraps the given JSON schema into the structure expected by OpenAI's Chat API when using `response_format: "json_schema"`.
+  Wraps the given JSON schema into the structured output envelope expected by OpenAI's Chat API (`response_format: "json_schema"`).
 
   This implementation follows the specification described under:
   [OpenAI API Reference - Create Chat Completion](https://platform.openai.com/docs/api-reference/chat/create)

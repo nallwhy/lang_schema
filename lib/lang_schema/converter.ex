@@ -5,7 +5,7 @@ defmodule LangSchema.Converter do
   This module serves as a foundation for transforming an abstract schema definition
   into a JSON schema compatible with a specific AI provider (like OpenAI, Gemini, etc.).
 
-  It defines the `to_schema/2` and `to_json_schema/2` callbacks that all specific converter
+  It defines the `function_calling/2` and `structured_output/2` callbacks that all specific converter
   modules must implement and provides a `__using__` macro to inject basic conversion logic
   and allow for customization.
 
@@ -20,7 +20,9 @@ defmodule LangSchema.Converter do
   @type combination() :: :any_of | :one_of | :all_of
 
   @doc """
-  Converts a schema into a raw JSON schema.
+  Converts a schema into a provider-specific JSON schema for function calling (tool use).
+
+  The resulting JSON schema can be used as the `parameters` field in a tool/function definition.
 
   ## Options
 
@@ -37,20 +39,20 @@ defmodule LangSchema.Converter do
     Ordered properties may be serialized using `Jason.OrderedObject` to retain order in the
     resulting JSON string. This assumes that `Jason` is used for final serialization; other encoders are not currently supported for ordered output.
   """
-  @callback to_schema(schema :: map(), opts :: keyword()) :: json_schema :: map()
+  @callback function_calling(schema :: map(), opts :: keyword()) :: json_schema :: map()
 
   @doc """
-  Converts a schema into a JSON schema wrapped in the provider-specific envelope.
+  Converts a schema into a JSON schema wrapped in the provider-specific envelope for structured output.
 
-  This calls `to_schema/2` internally and then passes the result through `wrap/2`.
+  This calls `function_calling/2` internally and then passes the result through `wrap/2`.
 
-  Accepts the same options as `to_schema/2`, plus any provider-specific options
+  Accepts the same options as `function_calling/2`, plus any provider-specific options
   used by `wrap/2` (e.g., `:name` and `:description` for OpenAI).
   """
-  @callback to_json_schema(schema :: map(), opts :: keyword()) :: json_schema :: map()
+  @callback structured_output(schema :: map(), opts :: keyword()) :: json_schema :: map()
 
   @doc """
-  Wraps the resulting JSON schema into a final structure required by the target provider.
+  Wraps the resulting JSON schema into a final structure required by the target provider for structured output.
 
   This function is used when a provider requires the JSON schema to be embedded within
   an additional enclosing structure. For example, OpenAI's Chat Completion expects the schema
@@ -106,13 +108,13 @@ defmodule LangSchema.Converter do
       @behaviour LangSchema.Converter
 
       @impl LangSchema.Converter
-      def to_schema(schema, opts \\ []) do
+      def function_calling(schema, opts \\ []) do
         unquote(__MODULE__).convert(schema, __MODULE__, opts)
       end
 
       @impl LangSchema.Converter
-      def to_json_schema(schema, opts \\ []) do
-        to_schema(schema, opts) |> wrap(opts)
+      def structured_output(schema, opts \\ []) do
+        function_calling(schema, opts) |> wrap(opts)
       end
 
       @impl LangSchema.Converter
