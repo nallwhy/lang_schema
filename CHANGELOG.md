@@ -1,24 +1,32 @@
 # Changelog
 
-## v0.5.0
+## v0.6.0
 
 ### Breaking Changes
 
-- `LangSchema.Converter.convert/2` has been split into two separate functions:
-  - `to_schema/2`: Converts a schema into a raw JSON schema (previously `convert/2` with `wrap?: false`)
-  - `to_json_schema/2`: Converts a schema into a JSON schema wrapped in the provider-specific envelope (previously `convert/2` with default `wrap?: true`)
+- `to_schema/2` and `to_json_schema/2` have been renamed to clarify their purpose:
+  - `function_calling/2`: Converts a schema into a provider-specific JSON schema for function calling (tool use)
+  - `structured_output/2`: Converts a schema into a JSON schema wrapped in the provider-specific envelope for structured output
 
 #### Migration Guide
 
 ```elixir
 # Before
-converter.convert(schema, opts)             # wrapped (default)
-converter.convert(schema, wrap?: false)     # raw
+LangSchema.to_schema(schema, :openai)           # raw JSON schema
+LangSchema.to_json_schema(schema, :openai)       # wrapped in envelope
 
 # After
-converter.to_json_schema(schema, opts)      # wrapped
-converter.to_schema(schema, opts)           # raw
+LangSchema.function_calling(schema, :openai)     # for function calling / tool use
+LangSchema.structured_output(schema, :openai)    # for structured output
 ```
+
+## v0.5.0
+
+### Breaking Changes
+
+- `LangSchema.Converter.convert/2` has been split into two separate functions:
+  - `to_schema/2` → now `function_calling/2`
+  - `to_json_schema/2` → now `structured_output/2`
 
 ## v0.4.0
 

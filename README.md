@@ -24,7 +24,7 @@ schema = %{
 **OpenAI**
 
 ```elixir
-schema |> LangSchema.to_schema(:openai)
+schema |> LangSchema.function_calling(:openai)
 # => %{
 #   "type" => "object",
 #   "description" => "User",
@@ -41,7 +41,7 @@ schema |> LangSchema.to_schema(:openai)
 **Gemini**
 
 ```elixir
-schema |> LangSchema.to_schema(:gemini)
+schema |> LangSchema.function_calling(:gemini)
 # => %{
 #   "type" => "object",
 #   "description" => "User",
@@ -70,8 +70,8 @@ LangSchema aims to define an abstract schema that can be commonly applied across
 Converters are the core components that transform abstract schemas into provider-specific JSON schemas. Each converter implements the `LangSchema.Converter` behaviour and handles the specific requirements and limitations of different AI providers.
 
 Each converter provides two main functions:
-- **`to_schema/2`**: Converts an abstract schema into a raw JSON schema
-- **`to_json_schema/2`**: Converts an abstract schema into a JSON schema wrapped in the provider-specific envelope (e.g., OpenAI's `name` + `schema` + `strict` structure)
+- **`function_calling/2`**: Converts an abstract schema into a provider-specific JSON schema for function calling (tool use)
+- **`structured_output/2`**: Converts an abstract schema into a JSON schema wrapped in the provider-specific envelope for structured output (e.g., OpenAI's `name` + `schema` + `strict` structure)
 
 Key features of converters:
 - **Type Mapping**: Define how abstract types (`:string`, `:integer`, etc.) map to provider-specific implementations
@@ -119,7 +119,7 @@ defmodule MyApp.LangSchema.Converter.MyProvider do
   @impl LangSchema.Converter
   def allowed_combinations() do
     # List only the combinations your provider supports, e.g., :any_of, :one_of, :all_of
-    [:any_of] 
+    [:any_of]
   end
 
   @impl LangSchema.Converter
@@ -138,7 +138,7 @@ LangSchema provides adapters that convert various input types into abstract sche
 
 Adapters implement the `LangSchema.Adapter` behaviour and provide a standardized way to convert inputs like:
 - Struct typespecs
-- `LangChain.FunctionParam` 
+- `LangChain.FunctionParam`
 - Ash Resources
 - Other custom data structures
 
@@ -161,5 +161,5 @@ end
 
 Elixir [LangChain](https://hex.pm/packages/langchain) provides support for structured output using `json_schema` for chat and `parameters_schema` for functions. By leveraging LangSchema with LangChain, you can seamlessly switch between AI providers without changing your code, maintaining a unified schema approach across different integrations.
 
-- For `json_schema` (structured output): use `LangSchema.to_json_schema/3`
-- For `parameters_schema` (function parameters): use `LangSchema.to_schema/3`
+- For `json_schema` (structured output): use `LangSchema.structured_output/3`
+- For `parameters_schema` (function parameters): use `LangSchema.function_calling/3`
