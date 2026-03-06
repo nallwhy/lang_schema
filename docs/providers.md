@@ -57,7 +57,7 @@ Structured output / JSON schema support reference for each provider, including `
 
 **Docs**: https://ai.google.dev/gemini-api/docs/structured-output
 
-**LangSchema converter**: `LangSchema.Converter.Gemini`
+**LangSchema converter**: `LangSchema.Converter.Google`
 
 ### `structured_output/2` envelope
 
@@ -96,7 +96,7 @@ Structured output / JSON schema support reference for each provider, including `
 
 **Docs**: https://platform.claude.com/docs/en/build-with-claude/structured-outputs
 
-**LangSchema converter**: `LangSchema.Converter.Anthropic` (not yet implemented)
+**LangSchema converter**: `LangSchema.Converter.Anthropic`
 
 ### `structured_output/2` envelope
 
@@ -321,9 +321,9 @@ Identical to OpenAI:
 | Provider | `structured_output` envelope path | LangSchema provider atom |
 |---|---|---|
 | OpenAI | `response_format.json_schema.schema` | `:openai` |
-| Gemini | `generationConfig.responseSchema` | `:gemini` |
-| Anthropic | `output_config.format.schema` | not yet implemented |
-| xAI | `response_format.json_schema.schema` | `:xai` (uses `Converter.OpenAI`) |
+| Google (Gemini) | `generationConfig.responseSchema` | `:google` |
+| Anthropic | `output_config.format.schema` | `:anthropic` |
+| xAI | `response_format.json_schema.schema` | not yet implemented |
 | Ollama | `format` (root, no wrapper) | not yet implemented |
-| Mistral | `response_format.json_schema.schema` | `:mistral` (uses `Converter.OpenAI`) |
-| LM Studio | `response_format.json_schema.schema` | `:lmstudio` (uses `Converter.OpenAI`) |
+| Mistral | `response_format.json_schema.schema` | not yet implemented |
+| LM Studio | `response_format.json_schema.schema` | not yet implemented |

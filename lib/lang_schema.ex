@@ -1,10 +1,11 @@
 defmodule LangSchema do
   @providers %{
     openai: LangSchema.Converter.OpenAI,
-    google: LangSchema.Converter.Google
+    google: LangSchema.Converter.Google,
+    anthropic: LangSchema.Converter.Anthropic
   }
 
-  @type provider :: :openai | :google
+  @type provider :: :openai | :google | :anthropic
 
   @doc """
   Converts a schema into a provider-specific JSON schema for function calling (tool use).

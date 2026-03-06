@@ -22,6 +22,7 @@ defmodule LangSchema.Test.ExternalTestHelper do
 
   def api_key!(:openai), do: System.fetch_env!("OPENAI_API_KEY")
   def api_key!(:google), do: System.fetch_env!("GOOGLE_API_KEY")
+  def api_key!(:anthropic), do: System.fetch_env!("ANTHROPIC_API_KEY")
 
   @doc """
   Extracts text content from a LangChain message.

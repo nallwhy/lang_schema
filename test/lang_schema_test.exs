@@ -16,6 +16,13 @@ defmodule LangSchemaTest do
       assert result == %{"type" => "string"}
     end
 
+    test "delegates to the correct converter for :anthropic" do
+      schema = %{type: :string}
+      result = LangSchema.function_calling(schema, :anthropic)
+
+      assert result == %{"type" => "string"}
+    end
+
     test "raises ArgumentError for invalid provider" do
       assert_raise ArgumentError, ~r/Invalid provider :unknown/, fn ->
         LangSchema.function_calling(%{type: :string}, :unknown)
@@ -34,6 +41,13 @@ defmodule LangSchemaTest do
     test "delegates to the correct converter for :google" do
       schema = %{type: :string}
       result = LangSchema.structured_output(schema, :google)
+
+      assert result == %{"type" => "string"}
+    end
+
+    test "delegates to the correct converter for :anthropic" do
+      schema = %{type: :string}
+      result = LangSchema.structured_output(schema, :anthropic)
 
       assert result == %{"type" => "string"}
     end
