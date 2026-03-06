@@ -1,5 +1,28 @@
 # Changelog
 
+## v0.7.0
+
+### Breaking Changes
+
+- `:gemini` provider atom renamed to `:google` for naming consistency with other libraries
+
+#### Migration Guide
+
+```elixir
+# Before
+LangSchema.function_calling(schema, :gemini)
+LangSchema.structured_output(schema, :gemini)
+
+# After
+LangSchema.function_calling(schema, :google)
+LangSchema.structured_output(schema, :google)
+```
+
+### New Features
+
+- Add `LangSchema.Converter.Anthropic` for Anthropic (Claude) structured outputs and function calling
+- Bump langchain to `~> 0.6.1`
+
 ## v0.6.0
 
 ### Breaking Changes

@@ -53,7 +53,7 @@ Structured output / JSON schema support reference for each provider, including `
 
 ---
 
-## Gemini
+## Google (Gemini)
 
 **Docs**: https://ai.google.dev/gemini-api/docs/structured-output
 

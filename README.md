@@ -38,10 +38,10 @@ schema |> LangSchema.function_calling(:openai)
 # }
 ```
 
-**Gemini**
+**Google (Gemini)**
 
 ```elixir
-schema |> LangSchema.function_calling(:gemini)
+schema |> LangSchema.function_calling(:google)
 # => %{
 #   "type" => "object",
 #   "description" => "User",
@@ -53,7 +53,7 @@ schema |> LangSchema.function_calling(:gemini)
 # }
 ```
 
-Same schema, different output — `nullable` becomes `["string", "null"]` for OpenAI and `"nullable": true` for Gemini.
+Same schema, different output — `nullable` becomes `["string", "null"]` for OpenAI and `"nullable": true` for Google.
 OpenAI auto-enforces `required` and `additionalProperties: false`.
 
 ## Design Goals
@@ -81,7 +81,8 @@ Key features of converters:
 ### Built-in Converters
 
 - OpenAI: [LangSchema.Converter.OpenAI](./lib/lang_schema/converter/openai.ex)
-- Gemini: [LangSchema.Converter.Gemini](./lib/lang_schema/converter/gemini.ex)
+- Google (Gemini): [LangSchema.Converter.Google](./lib/lang_schema/converter/google.ex)
+- Anthropic (Claude): [LangSchema.Converter.Anthropic](./lib/lang_schema/converter/anthropic.ex)
 
 ### Writing a Custom Converter
 
@@ -152,7 +153,7 @@ in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:lang_schema, "~> 0.5.0"}
+    {:lang_schema, "~> 0.7.0"}
   ]
 end
 ```
