@@ -1,13 +1,13 @@
-defmodule LangSchema.External.StructuredOutput.GeminiTest do
+defmodule LangSchema.External.StructuredOutput.GoogleTest do
   use ExUnit.Case, async: true
 
   alias LangSchema.Test.IntegrationSchema
   alias LangSchema.Test.ExternalTestHelper
 
-  @moduletag external: :gemini
+  @moduletag external: :google
 
   test "generates valid structured output" do
-    json_schema = IntegrationSchema.schema() |> LangSchema.structured_output(:gemini)
+    json_schema = IntegrationSchema.schema() |> LangSchema.structured_output(:google)
 
     chat =
       LangChain.ChatModels.ChatGoogleAI.new!(%{
@@ -15,7 +15,7 @@ defmodule LangSchema.External.StructuredOutput.GeminiTest do
         temperature: 0,
         json_response: true,
         json_schema: json_schema,
-        api_key: ExternalTestHelper.api_key!(:gemini)
+        api_key: ExternalTestHelper.api_key!(:google)
       })
 
     {:ok, chain} =

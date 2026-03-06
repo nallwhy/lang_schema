@@ -21,7 +21,7 @@ defmodule LangSchema.Test.ExternalTestHelper do
   def prompt, do: @prompt
 
   def api_key!(:openai), do: System.fetch_env!("OPENAI_API_KEY")
-  def api_key!(:gemini), do: System.fetch_env!("GEMINI_API_KEY")
+  def api_key!(:google), do: System.fetch_env!("GOOGLE_API_KEY")
 
   @doc """
   Extracts text content from a LangChain message.

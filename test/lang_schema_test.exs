@@ -9,9 +9,9 @@ defmodule LangSchemaTest do
       assert result == %{"type" => "string"}
     end
 
-    test "delegates to the correct converter for :gemini" do
+    test "delegates to the correct converter for :google" do
       schema = %{type: :string}
-      result = LangSchema.function_calling(schema, :gemini)
+      result = LangSchema.function_calling(schema, :google)
 
       assert result == %{"type" => "string"}
     end
@@ -31,9 +31,9 @@ defmodule LangSchemaTest do
       assert %{"name" => "test", "schema" => %{"type" => "string"}, "strict" => true} = result
     end
 
-    test "delegates to the correct converter for :gemini" do
+    test "delegates to the correct converter for :google" do
       schema = %{type: :string}
-      result = LangSchema.structured_output(schema, :gemini)
+      result = LangSchema.structured_output(schema, :google)
 
       assert result == %{"type" => "string"}
     end

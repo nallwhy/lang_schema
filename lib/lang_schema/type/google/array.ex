@@ -1,4 +1,4 @@
-defmodule LangSchema.Type.Gemini.Array do
+defmodule LangSchema.Type.Google.Array do
   use LangSchema.Type
 
   @impl LangSchema.Type

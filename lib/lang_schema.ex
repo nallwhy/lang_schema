@@ -1,10 +1,10 @@
 defmodule LangSchema do
   @providers %{
     openai: LangSchema.Converter.OpenAI,
-    gemini: LangSchema.Converter.Gemini
+    google: LangSchema.Converter.Google
   }
 
-  @type provider :: :openai | :gemini
+  @type provider :: :openai | :google
 
   @doc """
   Converts a schema into a provider-specific JSON schema for function calling (tool use).

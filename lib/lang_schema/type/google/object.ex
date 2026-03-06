@@ -1,4 +1,4 @@
-defmodule LangSchema.Type.Gemini.Object do
+defmodule LangSchema.Type.Google.Object do
   use LangSchema.Type
   alias LangSchema.Util.Nillable
   alias LangSchema.Util.KeywordStyle

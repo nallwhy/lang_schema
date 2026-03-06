@@ -1,4 +1,4 @@
-defmodule LangSchema.Type.Gemini.String do
+defmodule LangSchema.Type.Google.String do
   use LangSchema.Type
 
   @impl LangSchema.Type

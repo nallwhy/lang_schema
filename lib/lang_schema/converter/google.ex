@@ -1,4 +1,4 @@
-defmodule LangSchema.Converter.Gemini do
+defmodule LangSchema.Converter.Google do
   @moduledoc """
   Converts a LangSchema into a JSON schema compatible with Gemini's Structured Outputs.
 
@@ -49,11 +49,11 @@ defmodule LangSchema.Converter.Gemini do
   @impl LangSchema.Converter
   def types() do
     %{
-      integer: LangSchema.Type.Gemini.Integer,
-      number: LangSchema.Type.Gemini.Number,
-      string: LangSchema.Type.Gemini.String,
-      array: LangSchema.Type.Gemini.Array,
-      object: LangSchema.Type.Gemini.Object,
+      integer: LangSchema.Type.Google.Integer,
+      number: LangSchema.Type.Google.Number,
+      string: LangSchema.Type.Google.String,
+      array: LangSchema.Type.Google.Array,
+      object: LangSchema.Type.Google.Object,
       null: LangSchema.Type.Null
     }
   end

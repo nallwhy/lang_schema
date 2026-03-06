@@ -1,10 +1,10 @@
-defmodule LangSchema.Converter.GeminiTest do
+defmodule LangSchema.Converter.GoogleTest do
   use ExUnit.Case, async: true
-  alias LangSchema.Converter.Gemini
+  alias LangSchema.Converter.Google
 
   describe "function_calling" do
     test "returns json_schema with valid schema" do
-      result = LangSchema.Test.Schema.schema() |> Gemini.function_calling(ordered_properties: false)
+      result = LangSchema.Test.Schema.schema() |> Google.function_calling(ordered_properties: false)
 
       assert result == %{
                "type" => "object",
