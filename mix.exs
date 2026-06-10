@@ -37,7 +37,8 @@ defmodule LangSchema.MixProject do
     [
       {:recase, "~> 0.8.1"},
       {:jason, "~> 1.3"},
-      {:langchain, "~> 0.6.1", optional: true},
+      {:ash, "~> 3.0", optional: true},
+      {:langchain, ">= 0.6.1", optional: true},
       {:ex_doc, "~> 0.34", only: :doc, runtime: false}
     ]
   end
